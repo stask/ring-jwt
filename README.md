@@ -5,15 +5,10 @@ Only HS256 is supported at the moment.
 
 ## Usage
 
-```clojure
-;; building the token
-(make-jwt-token "secret" {:iss "issuer" :user-id "1234"})
+Use ```(ring-jwt.core/make-jwt-token secret payload)``` to create the JWT somewhere in your login handler. Send the JWT to the client. Client then should pass the token in "Authorization" header like this: ```Authorization: Bearer token```.
+_secret_ is a key that you should keep secret. _payload_ is an arbitrary hash that will be encoded into the JWT.
 
-;; using the middleware
-(-> ... other middlewares
-    (wrap-jwt "secret"))
-
-```
+Add the ```ring-jwt.core/wrap-jwt``` middleware to your ring middlewares. It will verify and decode the payload from JWT and assoc it to ring request under _:user_ key. If there is no token, or it couldn't verify the token signature, it will not assoc the payload.
 
 ## License
 

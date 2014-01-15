@@ -15,13 +15,15 @@
 
 (def jwt-key "secret")
 
-(deftest test-jwt
+(deftest test-encode
   (testing "header"
     (is (= (encode JWT-HEADER) jwt-header-output))
     (is (= (json/parse-string (decode jwt-header-output) true) JWT-HEADER)))
   (testing "payload"
     (is (= (encode jwt-payload) jwt-payload-output))
-    (is (= (json/parse-string (decode jwt-payload-output) true) jwt-payload)))
+    (is (= (json/parse-string (decode jwt-payload-output) true) jwt-payload))))
+
+(deftest test-token
   (testing "token"
     (is (= (make-jwt-token jwt-key jwt-payload) jwt-token))
     (is (= (decode-jwt-payload jwt-key jwt-token) jwt-payload))))
